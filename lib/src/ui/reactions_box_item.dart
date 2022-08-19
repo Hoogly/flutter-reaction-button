@@ -9,6 +9,8 @@ import '../utils/extensions.dart';
 class ReactionsBoxItem extends StatefulWidget {
   final ValueChanged<Reaction?> onReactionSelected;
 
+  final Function? onHover;
+
   final Reaction reaction;
 
   final double scale;
@@ -24,6 +26,7 @@ class ReactionsBoxItem extends StatefulWidget {
     required this.scale,
     this.scaleDuration,
     required this.dragStream,
+    this.onHover,
   }) : super(key: key);
 
   @override
@@ -45,6 +48,10 @@ class _ReactionsBoxItemState extends State<ReactionsBoxItem>
   void _onSelected() {
     _scaleController.reverse();
     widget.onReactionSelected.call(widget.reaction);
+  }
+
+  void _onHover() {
+    widget.onHover?.call();
   }
 
   bool _isWidgetHovered(DragData? dragData) {
@@ -104,9 +111,12 @@ class _ReactionsBoxItemState extends State<ReactionsBoxItem>
               if (isSelected) {
                 _onSelected();
               } else {
+                //debugPrint("hovering ${widget.reaction.value}");
+                _onHover();
                 _scaleController.forward();
               }
             } else {
+              //debugPrint("hovering end");
               _scaleController.reverse();
             }
           }

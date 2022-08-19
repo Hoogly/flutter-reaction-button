@@ -11,6 +11,8 @@ class ReactionButton<T> extends StatefulWidget {
   /// This triggers when reaction button value changed.
   final OnReactionChanged<T> onReactionChanged;
 
+  final Function? onHover;
+
   /// Default reaction button widget
   final Reaction<T>? initialReaction;
 
@@ -69,6 +71,7 @@ class ReactionButton<T> extends StatefulWidget {
     this.boxReactionSpacing = 0,
     this.itemScale = .3,
     this.itemScaleDuration,
+    this.onHover,
   }) : super(key: key);
 
   @override
@@ -101,7 +104,8 @@ class _ReactionButtonState<T> extends State<ReactionButton<T>> {
         key: _buttonKey,
         behavior: HitTestBehavior.translucent,
         onTapDown: (details) => _showReactionsBox(details.globalPosition),
-        onLongPressStart: (details) => _showReactionsBox(details.globalPosition),
+        onLongPressStart: (details) =>
+            _showReactionsBox(details.globalPosition),
         child: (_selectedReaction ?? widget.reactions.first).icon,
       );
 
@@ -113,6 +117,7 @@ class _ReactionButtonState<T> extends State<ReactionButton<T>> {
         transitionDuration: const Duration(milliseconds: 200),
         pageBuilder: (_, __, ___) {
           return ReactionsBox(
+            onHover: widget.onHover,
             buttonOffset: buttonOffset,
             buttonSize: buttonSize,
             reactions: widget.reactions,

@@ -38,6 +38,8 @@ class ReactionsBox extends StatefulWidget {
 
   final Duration? itemScaleDuration;
 
+  final Function? onHover;
+
   const ReactionsBox({
     Key? key,
     required this.buttonOffset,
@@ -54,6 +56,7 @@ class ReactionsBox extends StatefulWidget {
     this.reactionSpacing = 0,
     this.itemScale = .3,
     this.itemScaleDuration,
+    this.onHover,
   })  : assert(itemScale > 0.0 && itemScale < 1),
         super(key: key);
 
@@ -235,6 +238,7 @@ class _ReactionsBoxState extends State<ReactionsBox>
                   scaleDuration: widget.itemScaleDuration,
                   reaction: widget.reactions[i]!,
                   dragStream: _dragStream,
+                  onHover: widget.onHover,
                 ),
                 if (i < widget.reactions.length - 1)
                   SizedBox(width: widget.reactionSpacing),

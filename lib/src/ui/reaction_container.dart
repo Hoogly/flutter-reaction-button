@@ -8,6 +8,8 @@ class ReactionContainer<T> extends StatelessWidget {
   /// This triggers when reaction button value changed.
   final void Function(T?) onReactionChanged;
 
+  final Function? onHover;
+
   /// Previous selected reaction widget
   final Reaction<T>? selectedReaction;
 
@@ -56,6 +58,7 @@ class ReactionContainer<T> extends StatelessWidget {
     this.boxPadding = const EdgeInsets.all(0),
     this.itemScale = .3,
     this.itemScaleDuration,
+    this.onHover,
     required this.child,
   }) : super(key: key);
 
@@ -63,7 +66,8 @@ class ReactionContainer<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onLongPressStart: (details) => _showReactionsBox(context, details.globalPosition),
+      onLongPressStart: (details) =>
+          _showReactionsBox(context, details.globalPosition),
       child: child,
     );
   }
@@ -75,6 +79,7 @@ class ReactionContainer<T> extends StatelessWidget {
         transitionDuration: const Duration(milliseconds: 200),
         pageBuilder: (_, __, ___) {
           return ReactionsBox(
+            onHover: onHover,
             buttonOffset: buttonOffset,
             buttonSize: Size.zero,
             reactions: reactions,
