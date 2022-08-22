@@ -87,6 +87,8 @@ class _ReactionsBoxState extends State<ReactionsBox>
 
   DragData? _dragData;
 
+  int _hoveredIndex = -1;
+
   double? _getBoxHeight() {
     if (_boxSizeAnimation.value == null) return null;
 
@@ -238,7 +240,13 @@ class _ReactionsBoxState extends State<ReactionsBox>
                   scaleDuration: widget.itemScaleDuration,
                   reaction: widget.reactions[i]!,
                   dragStream: _dragStream,
-                  onHover: widget.onHover,
+                  onHover: () {
+                    if (_hoveredIndex != i) {
+                      //debugPrint("onHover $i");
+                      _hoveredIndex = i;
+                      widget.onHover?.call();
+                    }
+                  },
                 ),
                 if (i < widget.reactions.length - 1)
                   SizedBox(width: widget.reactionSpacing),
