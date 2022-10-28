@@ -12,6 +12,7 @@ class ReactionButton<T> extends StatefulWidget {
   final OnReactionChanged<T> onReactionChanged;
 
   final Function? onHover;
+  final Function? onTap;
 
   /// Default reaction button widget
   final Reaction<T>? initialReaction;
@@ -72,6 +73,7 @@ class ReactionButton<T> extends StatefulWidget {
     this.itemScale = .3,
     this.itemScaleDuration,
     this.onHover,
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -103,7 +105,11 @@ class _ReactionButtonState<T> extends State<ReactionButton<T>> {
   Widget build(BuildContext context) => GestureDetector(
         key: _buttonKey,
         behavior: HitTestBehavior.translucent,
-        onTapDown: (details) => _showReactionsBox(details.globalPosition),
+        onTap: () {
+          if (widget.onTap != null) {
+            widget.onTap?.call();
+          }
+        },
         onLongPressStart: (details) =>
             _showReactionsBox(details.globalPosition),
         child: (_selectedReaction ?? widget.reactions.first).icon,
